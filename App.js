@@ -1,77 +1,93 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import {WebView} from 'react-native-webview';
+import {StyleSheet, Image} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-const App = () => {
+import HomePage from './pages/homePage';
+import ChatPage from './pages/chatPage';
+import UploadPage from './pages/uploadPage';
+import MyProfilePage from './pages/myProfilePage';
+
+const Tab = createBottomTabNavigator();
+const TabBarIcon = (focused, name) => {
+  let iconImagePath;
+  let focusIconImagePath;
+
+  if (name === 'home') {
+    iconImagePath = require('./assets/icon/app_home.png');
+    focusIconImagePath = require('./assets/icon/app_home_click.png');
+  } else if (name === 'chat') {
+    iconImagePath = require('./assets/icon/app_chat.png');
+    focusIconImagePath = require('./assets/icon/app_chat_click.png');
+  } else if (name === 'upload') {
+    iconImagePath = require('./assets/icon/app_upload.png');
+    focusIconImagePath = require('./assets/icon/app_upload_click.png');
+  } else if (name === 'profile') {
+    iconImagePath = require('./assets/icon/app_profile.png');
+    focusIconImagePath = require('./assets/icon/app_profile_click.png');
+  }
+
   return (
-    <View style={styles.container}>
-      <WebView
-        style={styles.webview}
-        source={{uri: 'https://www.goods-duck.com/'}}
-      />
-      <View style={styles.nav}>
-        <TouchableOpacity style={styles.icon} onPress={() => alert('Home')}>
-          <Image
-            style={styles.iconImg}
-            source={{
-              uri: 'https://goodsduck-s3.s3.ap-northeast-2.amazonaws.com/icon/app_home.png',
-            }}
-            resizeMode="contain"
-          />
-          <Text style={styles.iconLabel}>홈</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.icon} onPress={() => alert('Home')}>
-          <Image
-            style={styles.iconImg}
-            source={{
-              uri: 'https://goodsduck-s3.s3.ap-northeast-2.amazonaws.com/icon/app_chat.png',
-            }}
-            resizeMode="contain"
-          />
-          <Text style={styles.iconLabel}>채팅</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.icon} onPress={() => alert('Home')}>
-          <Image
-            style={styles.iconImg}
-            source={{
-              uri: 'https://goodsduck-s3.s3.ap-northeast-2.amazonaws.com/icon/app_upload.png',
-            }}
-            resizeMode="contain"
-          />
-          <Text style={styles.iconLabel}>등록</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.icon} onPress={() => alert('Home')}>
-          <Image
-            style={styles.iconImg}
-            source={{
-              uri: 'https://goodsduck-s3.s3.ap-northeast-2.amazonaws.com/icon/app_profile.png',
-            }}
-            resizeMode="contain"
-          />
-          <Text style={styles.iconLabel}>내 정보</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    <Image
+      style={{width: 24, height: 24}}
+      source={focused ? focusIconImagePath : iconImagePath}
+    />
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 30,
-  },
-  webview: {
-    flex: 1,
-  },
-  nav: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginLeft: 10,
-    marginRight: 10,
-  },
-  icon: {alignItems: 'center'},
-  iconImg: {width: 25, height: 25},
-  iconLabel: {textAlign: 'center', marginTop: 7},
-});
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator
+        initialRouteName="home"
+        tabBarOptions={{
+          activeTintColor: '#222222',
+          inactiveTintColor: '#bbbbbb',
+        }}
+        screenOptions={({route}) => ({
+          tabBarLabel: route.name,
+          tabBarIcon: ({focused}) => TabBarIcon(focused, route.name),
+          headerShown: false,
+        })}>
+        <Tab.Screen
+          name="home"
+          component={HomePage}
+          options={{
+            tabBarLabel: '홈',
+            tabBarLabelStyle: {fontSize: 13, paddingTop: 7},
+          }}
+        />
+        <Tab.Screen
+          name="chat"
+          component={ChatPage}
+          options={{
+            tabBarLabel: '채팅',
+            tabBarLabelStyle: {fontSize: 13, paddingTop: 7},
+            // tabBarBadge: 3,
+            // tabBarBadgeStyle: {backgroundColor: '#006e5e'},
+          }}
+        />
+        <Tab.Screen
+          name="upload"
+          component={UploadPage}
+          options={{
+            tabBarLabel: '등록',
+            tabBarLabelStyle: {fontSize: 13, paddingTop: 7},
+          }}
+        />
+        <Tab.Screen
+          name="profile"
+          component={MyProfilePage}
+          options={{
+            tabBarLabel: '내정보',
+            tabBarLabelStyle: {fontSize: 13, paddingTop: 7},
+          }}
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+};
+
+const styles = StyleSheet.create({});
 
 export default App;
