@@ -12,7 +12,6 @@ target 'goodsduck_app' do
     :hermes_enabled => false
   )
 
-  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
 
   target 'goodsduck_appTests' do
     inherit! :complete
