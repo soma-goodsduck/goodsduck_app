@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Image} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+// import UserAgentIOS from 'rn-ios-user-agent';
 
 import HomePage from './pages/homePage';
 import ChatPage from './pages/chatPage';
@@ -29,13 +30,15 @@ const TabBarIcon = (focused, name) => {
 
   return (
     <Image
-      style={{width: 24, height: 24}}
+      style={{width: 24, height: 24, marginTop: 10}}
       source={focused ? focusIconImagePath : iconImagePath}
     />
   );
 };
 
 const App = () => {
+  // UserAgentIOS.set('GOODSDUCK iOS');
+
   return (
     <NavigationContainer>
       <Tab.Navigator
