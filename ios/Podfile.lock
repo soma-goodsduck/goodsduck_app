@@ -301,6 +301,8 @@ PODS:
   - React-jsinspector (0.65.1)
   - react-native-safe-area-context (3.3.0):
     - React-Core
+  - react-native-splash-screen (3.2.0):
+    - React
   - react-native-webview (11.13.0):
     - React-Core
   - React-perflogger (0.65.1)
@@ -369,6 +371,8 @@ PODS:
     - React-perflogger (= 0.65.1)
   - rn-ios-user-agent (2.0.0):
     - React
+  - RNCPushNotificationIOS (1.10.0):
+    - React-Core
   - RNFBApp (12.7.3):
     - Firebase/CoreOnly (= 8.6.0)
     - React-Core
@@ -433,6 +437,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -447,6 +452,7 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - rn-ios-user-agent (from `../node_modules/rn-ios-user-agent`)
+  - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -503,6 +509,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-splash-screen:
+    :path: "../node_modules/react-native-splash-screen"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-perflogger:
@@ -531,6 +539,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   rn-ios-user-agent:
     :path: "../node_modules/rn-ios-user-agent"
+  RNCPushNotificationIOS:
+    :path: "../node_modules/@react-native-community/push-notification-ios"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBMessaging:
@@ -574,6 +584,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 43f2542aed3c26e42175b339f8d37fe3dd683765
   React-jsinspector: 41e58e5b8e3e0bf061fdf725b03f2144014a8fb0
   react-native-safe-area-context: 61c8c484a3a9e7d1fda19f7b1794b35bbfd2262a
+  react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-webview: 133a6a5149f963259646e710b4545c67ef35d7c9
   React-perflogger: fd28ee1f2b5b150b00043f0301d96bd417fdc339
   React-RCTActionSheet: 7f3fa0855c346aa5d7c60f9ced16e067db6d29fa
@@ -588,6 +599,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 85187f19dd9c47a7c102f9994f9d14e4dc2110de
   ReactCommon: eafed38eec7b591c31751bfa7494801618460459
   rn-ios-user-agent: e9d6167c3399a0071f650cb13a36882af896ca0c
+  RNCPushNotificationIOS: 5ee247e594d0b5df3cd7be74b51035a0d91807eb
   RNFBApp: 348de8df1e2e281c05bd6cf69ff99cc85c74da63
   RNFBMessaging: 3fc0aa060e9af42e76b80a20632ea3b29fcf09f7
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
@@ -595,6 +607,6 @@ SPEC CHECKSUMS:
   RNScreens: eb0dfb2d6b21d2d7f980ad46b14eb306d2f1062e
   Yoga: aa0cb45287ebe1004c02a13f279c55a95f1572f4
 
-PODFILE CHECKSUM: c42339ecb563ada1901ce437cea97109937d2ee6
+PODFILE CHECKSUM: 90f5c15913b8b01889d4ef2aa0f6a21ad255055d
 
 COCOAPODS: 1.10.2
