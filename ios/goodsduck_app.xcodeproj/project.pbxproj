@@ -14,6 +14,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		998BB61D32B9D6E6C6D5A011 /* libPods-goodsduck_app.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96576447B17E14D744AF0A19 /* libPods-goodsduck_app.a */; };
+		B53F3B5926DF951E00458AB3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B53F3B5826DF951E00458AB3 /* GoogleService-Info.plist */; };
 		B550B02F26DBDFB4003727F8 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B550B02E26DBDFB4003727F8 /* SplashScreen.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		8842A8AF4B7DFFC8C664349A /* Pods-goodsduck_app-goodsduck_appTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-goodsduck_app-goodsduck_appTests.debug.xcconfig"; path = "Target Support Files/Pods-goodsduck_app-goodsduck_appTests/Pods-goodsduck_app-goodsduck_appTests.debug.xcconfig"; sourceTree = "<group>"; };
 		96576447B17E14D744AF0A19 /* libPods-goodsduck_app.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-goodsduck_app.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A65B1267D62AD096D885B9F5 /* Pods-goodsduck_app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-goodsduck_app.release.xcconfig"; path = "Target Support Files/Pods-goodsduck_app/Pods-goodsduck_app.release.xcconfig"; sourceTree = "<group>"; };
+		B53F3B5826DF951E00458AB3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B540720B68576567DFE7B02B /* Pods-goodsduck_app-goodsduck_appTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-goodsduck_app-goodsduck_appTests.release.xcconfig"; path = "Target Support Files/Pods-goodsduck_app-goodsduck_appTests/Pods-goodsduck_app-goodsduck_appTests.release.xcconfig"; sourceTree = "<group>"; };
 		B550B02E26DBDFB4003727F8 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SplashScreen.storyboard; sourceTree = "<group>"; };
 		B5BEF69026D8CE7700601A4D /* goodsduck_app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = goodsduck_app.entitlements; path = goodsduck_app/goodsduck_app.entitlements; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 		13B07FAE1A68108700A75B9A /* goodsduck_app */ = {
 			isa = PBXGroup;
 			children = (
+				B53F3B5826DF951E00458AB3 /* GoogleService-Info.plist */,
 				B5BEF69026D8CE7700601A4D /* goodsduck_app.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -186,8 +189,8 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				B30A1D0F62776C7269AB57E0 /* [CP] Copy Pods Resources */,
 				5DDDB1C34B0F0B82B02ED17C /* [CP-User] [RNFB] Core Configuration */,
+				BB109B6FF4C56430B3B430BA /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -247,6 +250,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				B53F3B5926DF951E00458AB3 /* GoogleService-Info.plist in Resources */,
 				B550B02F26DBDFB4003727F8 /* SplashScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
@@ -321,7 +325,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-goodsduck_app-goodsduck_appTests/Pods-goodsduck_app-goodsduck_appTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B30A1D0F62776C7269AB57E0 /* [CP] Copy Pods Resources */ = {
+		BB109B6FF4C56430B3B430BA /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
