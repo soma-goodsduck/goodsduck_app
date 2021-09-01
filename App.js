@@ -1,96 +1,120 @@
-import React from 'react';
-import {StyleSheet, Image} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-// import UserAgentIOS from 'rn-ios-user-agent';
+import React, {useEffect, useRef, useState} from 'react';
+import {SafeAreaView, StyleSheet, Platform} from 'react-native';
+import {WebView} from 'react-native-webview';
 
-import HomePage from './pages/homePage';
-import ChatPage from './pages/chatPage';
-import UploadPage from './pages/uploadPage';
-import MyProfilePage from './pages/myProfilePage';
+import {fcmService} from './src/FCMService';
+import {localNotificationService} from './src/LocalNotificationService';
 
-const Tab = createBottomTabNavigator();
-const TabBarIcon = (focused, name) => {
-  let iconImagePath;
-  let focusIconImagePath;
+import SplashScreen from 'react-native-splash-screen';
 
-  if (name === 'home') {
-    iconImagePath = require('./assets/icon/app_home.png');
-    focusIconImagePath = require('./assets/icon/app_home_click.png');
-  } else if (name === 'chat') {
-    iconImagePath = require('./assets/icon/app_chat.png');
-    focusIconImagePath = require('./assets/icon/app_chat_click.png');
-  } else if (name === 'upload') {
-    iconImagePath = require('./assets/icon/app_upload.png');
-    focusIconImagePath = require('./assets/icon/app_upload_click.png');
-  } else if (name === 'profile') {
-    iconImagePath = require('./assets/icon/app_profile.png');
-    focusIconImagePath = require('./assets/icon/app_profile_click.png');
-  }
+export default function App() {
+  const [token, setToken] = useState('');
+
+  // webview 통신
+  let webviewRef = useRef();
+
+  const handleSetRef = _ref => {
+    webviewRef = _ref;
+  };
+
+  const handleEndLoading = () => {
+    console.log('handleEndLoading');
+
+    const data = {type: 'TOKEN', data: token};
+    webviewRef.postMessage(JSON.stringify(data));
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      SplashScreen.hide();
+    }, 1500);
+  }, []);
+
+  useEffect(() => {
+    fcmService.registerAppWithFCM();
+    fcmService.register(onRegister, onNotification, onOpenNotification);
+    localNotificationService.configure(onOpenNotification);
+
+    function onRegister(token) {
+      console.log('[App] onRegister : token :', token);
+      setToken(token);
+    }
+
+    function onNotification(notify) {
+      console.log('[App] onNotification : notify :', notify);
+
+      const options = {
+        soundName: 'default',
+        playSound: true,
+      };
+      localNotificationService.showNotification(
+        0,
+        notify.title,
+        notify.body,
+        notify,
+        options,
+      );
+    }
+
+    function onOpenNotification(notify) {
+      console.log('[App] onOpenNotification : notify :', notify);
+      alert(notify.body);
+    }
+    return () => {
+      console.log('[App] unRegister');
+      fcmService.unRegister();
+      localNotificationService.unregister();
+    };
+  }, []);
+
+  const debugging = `
+    const consoleLog = (type, log) => window.ReactNativeWebView.postMessage(JSON.stringify({'type': 'Console', 'data': {'type': type, 'log': log}}));
+    console = {
+        log: (log) => consoleLog('log', log),
+        debug: (log) => consoleLog('debug', log),
+        info: (log) => consoleLog('info', log),
+        warn: (log) => consoleLog('warn', log),
+        error: (log) => consoleLog('error', log),
+      };
+  `;
+
+  const onMessage = payload => {
+    let dataPayload;
+    try {
+      dataPayload = JSON.parse(payload.nativeEvent.data);
+    } catch (e) {}
+
+    if (dataPayload) {
+      if (dataPayload.type === 'Console') {
+        console.info(`[Console] ${JSON.stringify(dataPayload.data)}`);
+      } else {
+        console.log(dataPayload);
+      }
+    }
+  };
 
   return (
-    <Image
-      style={{width: 24, height: 24, marginTop: 10}}
-      source={focused ? focusIconImagePath : iconImagePath}
-    />
+    <SafeAreaView barStyle="white-content" style={styles.container}>
+      <WebView
+        style={styles.webview}
+        source={{uri: 'https://www.goods-duck.com/'}}
+        // source={{uri: 'https://541e5a4ccbbbc9.localhost.run'}}
+        userAgent={Platform.OS === 'ios' ? 'IOS APP' : 'ANDROID APP'}
+        webviewRef={webviewRef}
+        ref={handleSetRef}
+        onLoadEnd={handleEndLoading}
+        injectedJavaScript={debugging}
+        onMessage={onMessage}
+      />
+    </SafeAreaView>
   );
-};
+}
 
-const App = () => {
-  // UserAgentIOS.set('GOODSDUCK iOS');
-
-  return (
-    <NavigationContainer>
-      <Tab.Navigator
-        initialRouteName="home"
-        tabBarOptions={{
-          activeTintColor: '#222222',
-          inactiveTintColor: '#bbbbbb',
-        }}
-        screenOptions={({route}) => ({
-          tabBarLabel: route.name,
-          tabBarIcon: ({focused}) => TabBarIcon(focused, route.name),
-          headerShown: false,
-        })}>
-        <Tab.Screen
-          name="home"
-          component={HomePage}
-          options={{
-            tabBarLabel: '홈',
-            tabBarLabelStyle: {fontSize: 13, paddingTop: 7},
-          }}
-        />
-        <Tab.Screen
-          name="chat"
-          component={ChatPage}
-          options={{
-            tabBarLabel: '채팅',
-            tabBarLabelStyle: {fontSize: 13, paddingTop: 7},
-            // tabBarBadge: 3,
-            // tabBarBadgeStyle: {backgroundColor: '#006e5e'},
-          }}
-        />
-        <Tab.Screen
-          name="upload"
-          component={UploadPage}
-          options={{
-            tabBarLabel: '등록',
-            tabBarLabelStyle: {fontSize: 13, paddingTop: 7},
-          }}
-        />
-        <Tab.Screen
-          name="profile"
-          component={MyProfilePage}
-          options={{
-            tabBarLabel: '내정보',
-            tabBarLabelStyle: {fontSize: 13, paddingTop: 7},
-          }}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
-  );
-};
-
-const styles = StyleSheet.create({});
-
-export default App;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  webview: {
+    flex: 1,
+  },
+});
