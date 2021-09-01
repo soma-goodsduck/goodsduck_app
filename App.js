@@ -4,13 +4,15 @@ import {WebView} from 'react-native-webview';
 
 import {fcmService} from './src/FCMService';
 import {localNotificationService} from './src/LocalNotificationService';
+import Notification from './src/Notification';
 
 import SplashScreen from 'react-native-splash-screen';
 
 export default function App() {
   const [token, setToken] = useState('');
+  const [showNoti, setShotNoti] = useState(false);
+  const [notiInfo, setNotiInfo] = useState(null);
 
-  // webview 통신
   let webviewRef = useRef();
 
   const handleSetRef = _ref => {
@@ -25,12 +27,12 @@ export default function App() {
   };
 
   useEffect(() => {
+    // Splash Screen
     setTimeout(() => {
       SplashScreen.hide();
     }, 1500);
-  }, []);
 
-  useEffect(() => {
+    // FCM
     fcmService.registerAppWithFCM();
     fcmService.register(onRegister, onNotification, onOpenNotification);
     localNotificationService.configure(onOpenNotification);
@@ -42,6 +44,13 @@ export default function App() {
 
     function onNotification(notify) {
       console.log('[App] onNotification : notify :', notify);
+
+      setShotNoti(true);
+      setNotiInfo(notify.body);
+
+      setTimeout(() => {
+        setShotNoti(false);
+      }, 3000);
 
       const options = {
         soundName: 'default',
@@ -95,10 +104,11 @@ export default function App() {
 
   return (
     <SafeAreaView barStyle="white-content" style={styles.container}>
+      {showNoti && <Notification data={notiInfo} />}
       <WebView
         style={styles.webview}
         source={{uri: 'https://www.goods-duck.com/'}}
-        // source={{uri: 'https://541e5a4ccbbbc9.localhost.run'}}
+        // source={{uri: 'https://e672064d45a8f6.localhost.run'}}
         userAgent={Platform.OS === 'ios' ? 'IOS APP' : 'ANDROID APP'}
         webviewRef={webviewRef}
         ref={handleSetRef}
