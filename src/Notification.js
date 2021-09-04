@@ -1,9 +1,12 @@
 import React from 'react';
-import {Text, View, Image, StyleSheet} from 'react-native';
+import {Text, View, Image, StyleSheet, Platform} from 'react-native';
 
 const Notification = ({data}) => {
   return (
-    <View style={styles.notiBox}>
+    <View
+      style={
+        Platform.OS === 'ios' ? styles.notiBoxForIOS : styles.notiBoxForAndroid
+      }>
       <Image
         style={styles.image}
         source={{
@@ -17,7 +20,30 @@ const Notification = ({data}) => {
 };
 
 const styles = StyleSheet.create({
-  notiBox: {
+  notiBoxForIOS: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    top: 60,
+    width: '85%',
+    zIndex: 9999,
+
+    backgroundColor: '#222222',
+    borderRadius: 10,
+    padding: 10,
+    marginLeft: '7%',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  notiBoxForAndroid: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -25,6 +51,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 20,
     width: '85%',
+    zIndex: 9999,
 
     backgroundColor: '#222222',
     borderRadius: 10,
