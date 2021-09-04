@@ -81,6 +81,7 @@ class FCMService {
         '[FCMService] onNotificationOpenApp Notification caused app to open from background',
         remoteMessage,
       );
+
       if (remoteMessage) {
         const notification = remoteMessage.notification;
         onOpenNotification(notification);
@@ -114,13 +115,7 @@ class FCMService {
     this.messageListener = messaging().onMessage(async remoteMessage => {
       console.log('[FCMService] A new FCM message arrived', remoteMessage);
       if (remoteMessage) {
-        let notification = null;
-        if (Platform.OS === 'ios') {
-          notification = remoteMessage.data.notification;
-        } else {
-          notification = remoteMessage.notification;
-        }
-        onNotification(notification);
+        onNotification(remoteMessage);
       }
     });
 

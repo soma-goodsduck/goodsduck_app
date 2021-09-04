@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {SafeAreaView, StyleSheet, Platform} from 'react-native';
 import {WebView} from 'react-native-webview';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import {fcmService} from './src/FCMService';
 import {localNotificationService} from './src/LocalNotificationService';
@@ -19,9 +20,20 @@ export default function App() {
     webviewRef = _ref;
   };
 
+  const onNavigationStateChange = async navState => {
+    const url = navState.url.split('/');
+    const _chatRoomId = String(url[url.length - 1]);
+
+    if (_chatRoomId) {
+      await AsyncStorage.setItem('chatRoomId', _chatRoomId);
+    }
+  };
+
   const handleEndLoading = () => {
     console.log('handleEndLoading');
+  };
 
+  const sendFcmToken = () => {
     const data = {type: 'TOKEN', data: token};
     webviewRef.postMessage(JSON.stringify(data));
   };
@@ -42,11 +54,18 @@ export default function App() {
       setToken(token);
     }
 
-    function onNotification(notify) {
-      console.log('[App] onNotification : notify :', notify);
+    async function onNotification(notify) {
+      console.log('[App] onNotification : notify :', notify.notification);
+
+      const chatRoomId = await AsyncStorage.getItem('chatRoomId');
+      if (notify.data.type === 'CHAT') {
+        if (notify.data.chatRoomId === chatRoomId) {
+          return;
+        }
+      }
 
       setShotNoti(true);
-      setNotiInfo(notify.body);
+      setNotiInfo(notify.notification.body);
 
       setTimeout(() => {
         setShotNoti(false);
@@ -91,7 +110,13 @@ export default function App() {
     let dataPayload;
     try {
       dataPayload = JSON.parse(payload.nativeEvent.data);
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
+
+    if (dataPayload.type === 'REQ_FCM_TOKEN') {
+      sendFcmToken();
+    }
 
     if (dataPayload) {
       if (dataPayload.type === 'Console') {
@@ -108,11 +133,12 @@ export default function App() {
       <WebView
         style={styles.webview}
         source={{uri: 'https://www.goods-duck.com/'}}
-        // source={{uri: 'https://e672064d45a8f6.localhost.run'}}
+        // source={{uri: 'https://05ec313d32a022.localhost.run'}}
         userAgent={Platform.OS === 'ios' ? 'IOS APP' : 'ANDROID APP'}
         webviewRef={webviewRef}
         ref={handleSetRef}
         onLoadEnd={handleEndLoading}
+        onNavigationStateChange={onNavigationStateChange}
         injectedJavaScript={debugging}
         onMessage={onMessage}
       />
