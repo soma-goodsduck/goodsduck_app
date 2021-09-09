@@ -83,13 +83,17 @@ class FCMService {
       );
 
       if (remoteMessage) {
-        const notification = remoteMessage.notification;
-        onOpenNotification(notification);
+        if (Platform.OS === 'ios') {
+          onOpenNotification(remoteMessage);
+        } else {
+          const notification = remoteMessage.notification;
+          onOpenNotification(notification);
+        }
         //this.removeDeliveredNotification(Notification.NotificationId)
       } else {
         console.log('background notification error');
       }
-      alert(remoteMessage.body);
+      // alert(remoteMessage.body);
     });
 
     //Check whether an initial notification is available
@@ -103,8 +107,12 @@ class FCMService {
         );
 
         if (remoteMessage) {
-          const notification = remoteMessage.notification;
-          onOpenNotification(notification);
+          if (Platform.OS === 'ios') {
+            onOpenNotification(remoteMessage);
+          } else {
+            const notification = remoteMessage.notification;
+            onOpenNotification(notification);
+          }
           //this.removeDeliveredNotification(notification.notificationId)
         } else {
           console.log('quit state notification error : ');
