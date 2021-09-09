@@ -10,6 +10,10 @@ import Notification from './src/Notification';
 import SplashScreen from 'react-native-splash-screen';
 
 export default function App() {
+  const [webviewURL, setWebviewURL] = useState('https://www.goods-duck.com/');
+  // const [webviewURL, setWebviewURL] = useState(
+  //   'https://cbfa5748dac903.localhost.run',
+  // );
   const [token, setToken] = useState('');
   const [showNoti, setShotNoti] = useState(false);
   const [notiInfo, setNotiInfo] = useState(null);
@@ -49,9 +53,9 @@ export default function App() {
     fcmService.register(onRegister, onNotification, onOpenNotification);
     localNotificationService.configure(onOpenNotification);
 
-    function onRegister(token) {
-      console.log('[App] onRegister : token :', token);
-      setToken(token);
+    function onRegister(_token) {
+      console.log('[App] onRegister : token :', _token);
+      setToken(_token);
     }
 
     async function onNotification(notify) {
@@ -77,16 +81,29 @@ export default function App() {
       };
       localNotificationService.showNotification(
         0,
-        notify.title,
-        notify.body,
+        notify.notification.title,
+        notify.notification.body,
         notify,
         options,
       );
     }
 
     function onOpenNotification(notify) {
-      console.log('[App] onOpenNotification : notify :', notify);
-      alert(notify.body);
+      if (Platform.OS === 'ios') {
+        console.log('[App] onOpenNotification : ios notify :', notify);
+        // setWebviewURL(`https://www.goods-duck.com${notify.data.data.clickAction}`);
+      } else {
+        console.log(
+          '[App] onOpenNotification : android notify :',
+          notify.notification,
+        );
+        // setWebviewURL(
+        //   `https://www.goods-duck.com${notify.notification.android.clickAction}`,
+        // );
+      }
+
+      // sendNoti(notify.notification.body);
+      // alert(notify.notification.body);
     }
     return () => {
       console.log('[App] unRegister');
@@ -132,8 +149,7 @@ export default function App() {
       {showNoti && <Notification data={notiInfo} />}
       <WebView
         style={styles.webview}
-        source={{uri: 'https://www.goods-duck.com/'}}
-        // source={{uri: 'https://05ec313d32a022.localhost.run'}}
+        source={{uri: webviewURL}}
         userAgent={Platform.OS === 'ios' ? 'IOS APP' : 'ANDROID APP'}
         webviewRef={webviewRef}
         ref={handleSetRef}
