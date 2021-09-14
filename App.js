@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {SafeAreaView, StyleSheet, Platform} from 'react-native';
+import {SafeAreaView, StyleSheet, Platform, LogBox} from 'react-native';
 import {WebView} from 'react-native-webview';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -43,6 +43,8 @@ export default function App() {
   };
 
   useEffect(() => {
+    LogBox.ignoreAllLogs();
+
     // Splash Screen
     setTimeout(() => {
       SplashScreen.hide();
