@@ -91,19 +91,16 @@ export default function App() {
     function onOpenNotification(notify) {
       if (Platform.OS === 'ios') {
         console.log('[App] onOpenNotification : ios notify :', notify);
-        // setWebviewURL(`https://www.goods-duck.com${notify.data.data.clickAction}`);
+        setWebviewURL(`https://www.goods-duck.com/${notify.data.clickAction}`);
       } else {
         console.log(
           '[App] onOpenNotification : android notify :',
           notify.notification,
         );
         // setWebviewURL(
-        //   `https://www.goods-duck.com${notify.notification.android.clickAction}`,
+        //   `https://www.goods-duck.com/${notify.notification.android.clickAction}`,
         // );
       }
-
-      // sendNoti(notify.notification.body);
-      // alert(notify.notification.body);
     }
     return () => {
       console.log('[App] unRegister');
