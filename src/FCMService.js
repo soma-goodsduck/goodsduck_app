@@ -1,4 +1,4 @@
-import messaging from '@react-native-firebase/messaging';
+import messaging, { firebase } from '@react-native-firebase/messaging';
 import {Platform} from 'react-native';
 
 class FCMService {

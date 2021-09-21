@@ -65,6 +65,10 @@ class LocalNotificationService {
       message: message || '',
       playSound: options.playSound || false,
       soundName: options.soundName || 'default',
+      smallIcon: options.smallIcon || '@drawable/ic_notification',
+      color: 'ffce00',
+      // color: '@values/color',
+      // color: '@color/colorPush',
       userInteraction: false, //BOOLEAN : If the notification was opend by the user from notification area or not
       channelId: 1,
     });
@@ -74,8 +78,10 @@ class LocalNotificationService {
     return {
       id: id,
       authCancel: true,
-      largeIcon: options.largeIcon || 'ic_launcher',
-      smallIcon: options.smallIcon || 'ic_notification',
+      largeIcon: '@drawable/ic_launcher',
+      smallIcon: '@drawable/ic_notification',
+      // color: '#ffce00',
+      color: 'ffce00',
       // bigText: message || '',
       // subText: title || '',
       vibrate: options.vibrate || true,

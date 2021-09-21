@@ -11,19 +11,7 @@ import SplashScreen from 'react-native-splash-screen';
 
 
 export default function App() {
-
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center"
-    },
-    text: {
-      fontSize: 18,
-      fontWeight: "bold"
-    }
-  });
-
+  
   const [webviewURL, setWebviewURL] = useState('https://www.goods-duck.com/');
   // const [webviewURL, setWebviewURL] = useState(
   //   'https://cbfa5748dac903.localhost.run',
@@ -121,27 +109,27 @@ export default function App() {
       }
     }
 
-    // const backAction = () => {
-    //   Alert.alert("Hold on!", "앱을 종료하시겠습니까?", [
-    //     {
-    //       text: "취소",
-    //       onPress: () => null,
-    //     },
-    //     { text: "확인", onPress: () => BackHandler.exitApp() }
-    //   ]);
-    //   return true;
-    // };
+    const backAction = () => {
+      Alert.alert("GOODSDUCK", "정말 종료하시겠습니까? 😭", [
+        {
+          text: "취소",
+          onPress: () => null,
+        },
+        { text: "확인", onPress: () => BackHandler.exitApp() }
+      ]);
+      return true;
+    };
   
-    // const backHandler = BackHandler.addEventListener(
-    //   "hardwareBackPress",
-    //   backAction
-    // );
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
 
     return () => {
       console.log('[App] unRegister');
       fcmService.unRegister();
       localNotificationService.unregister();
-      // backHandler.remove();
+      backHandler.remove();
     };
   }, []);
 
