@@ -1,21 +1,35 @@
 import React from 'react';
-import {Text, View, Image, StyleSheet, Platform} from 'react-native';
+import {
+  Text,
+  View,
+  Image,
+  TouchableWithoutFeedback,
+  StyleSheet,
+  Platform,
+} from 'react-native';
 
-const Notification = ({data}) => {
+const Notification = ({data, clickUrl, onClickNoti}) => {
   return (
-    <View
-      style={
-        Platform.OS === 'ios' ? styles.notiBoxForIOS : styles.notiBoxForAndroid
-      }>
-      <Image
-        style={styles.image}
-        source={{
-          uri: 'https://goodsduck-s3.s3.ap-northeast-2.amazonaws.com/icon/goodsduck.png',
-        }}
-        resizeMode="contain"
-      />
-      <Text style={styles.text}>{data}</Text>
-    </View>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        onClickNoti(clickUrl);
+      }}>
+      <View
+        style={
+          Platform.OS === 'ios'
+            ? styles.notiBoxForIOS
+            : styles.notiBoxForAndroid
+        }>
+        <Image
+          style={styles.image}
+          source={{
+            uri: 'https://goodsduck-s3.s3.ap-northeast-2.amazonaws.com/icon/goodsduck.png',
+          }}
+          resizeMode="contain"
+        />
+        <Text style={styles.text}>{data}</Text>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 

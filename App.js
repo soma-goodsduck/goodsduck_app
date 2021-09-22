@@ -1,5 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {SafeAreaView, StyleSheet, Platform, LogBox, BackHandler, ToastAndroid, Alert} from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Platform,
+  LogBox,
+  BackHandler,
+  Alert,
+} from 'react-native';
 import {WebView} from 'react-native-webview';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -9,16 +16,12 @@ import Notification from './src/Notification';
 
 import SplashScreen from 'react-native-splash-screen';
 
-
 export default function App() {
-  
   const [webviewURL, setWebviewURL] = useState('https://www.goods-duck.com/');
-  // const [webviewURL, setWebviewURL] = useState(
-  //   'https://cbfa5748dac903.localhost.run',
-  // );
   const [token, setToken] = useState('');
-  const [showNoti, setShotNoti] = useState(false);
+  const [showNoti, setShowNoti] = useState(false);
   const [notiInfo, setNotiInfo] = useState(null);
+  const [notiUrl, setNotiUrl] = useState('');
 
   let webviewRef = useRef();
 
@@ -44,7 +47,10 @@ export default function App() {
     webviewRef.postMessage(JSON.stringify(data));
   };
 
-  
+  const handleClickNoti = _notiUrl => {
+    setWebviewURL(`https://www.goods-duck.com/${_notiUrl}`);
+  };
+
   useEffect(() => {
     LogBox.ignoreAllLogs();
 
@@ -73,12 +79,27 @@ export default function App() {
         }
       }
 
-      setShotNoti(true);
       setNotiInfo(notify.notification.body);
+      if (Platform.OS === 'ios') {
+        setNotiUrl(notify.data.clickAction);
+      } else {
+        setNotiUrl(notify.notification.data.clickAction);
+      }
 
-      setTimeout(() => {
-        setShotNoti(false);
-      }, 3000);
+      if (notify.data.type === 'LEVEL_UP') {
+        setTimeout(() => {
+          setShowNoti(true);
+        }, 3000);
+
+        setTimeout(() => {
+          setShowNoti(false);
+        }, 8000);
+      } else {
+        setShowNoti(true);
+        setTimeout(() => {
+          setShowNoti(false);
+        }, 3000);
+      }
 
       const options = {
         soundName: 'default',
@@ -93,7 +114,7 @@ export default function App() {
       );
     }
 
-    function onOpenNotification(notify) {
+    const onOpenNotification = notify => {
       if (Platform.OS === 'ios') {
         console.log('[App] onOpenNotification : ios notify :', notify);
         setWebviewURL(`https://www.goods-duck.com/${notify.data.clickAction}`);
@@ -107,22 +128,22 @@ export default function App() {
           `https://www.goods-duck.com${notify.notification.data.clickAction}`,
         );
       }
-    }
+    };
 
     const backAction = () => {
-      Alert.alert("GOODSDUCK", "정말 종료하시겠습니까? 😭", [
+      Alert.alert('GOODSDUCK', '정말 종료하시겠습니까? 😭', [
         {
-          text: "취소",
+          text: '취소',
           onPress: () => null,
         },
-        { text: "확인", onPress: () => BackHandler.exitApp() }
+        {text: '확인', onPress: () => BackHandler.exitApp()},
       ]);
       return true;
     };
-  
+
     const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction
+      'hardwareBackPress',
+      backAction,
     );
 
     return () => {
@@ -167,7 +188,13 @@ export default function App() {
 
   return (
     <SafeAreaView barStyle="white-content" style={styles.container}>
-      {showNoti && <Notification data={notiInfo} />}
+      {showNoti && (
+        <Notification
+          data={notiInfo}
+          clickUrl={notiUrl}
+          onClickNoti={handleClickNoti}
+        />
+      )}
       <WebView
         style={styles.webview}
         source={{uri: webviewURL}}
@@ -181,7 +208,6 @@ export default function App() {
       />
     </SafeAreaView>
   );
-  
 }
 
 const styles = StyleSheet.create({
