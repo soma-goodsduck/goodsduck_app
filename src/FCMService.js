@@ -1,4 +1,4 @@
-import messaging, { firebase } from '@react-native-firebase/messaging';
+import messaging from '@react-native-firebase/messaging';
 import {Platform} from 'react-native';
 
 class FCMService {
@@ -110,8 +110,7 @@ class FCMService {
           if (Platform.OS === 'ios') {
             onOpenNotification(remoteMessage);
           } else {
-            const notification = remoteMessage.notification;
-            onOpenNotification(notification);
+            onOpenNotification(remoteMessage);
           }
           //this.removeDeliveredNotification(notification.notificationId)
         } else {

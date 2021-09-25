@@ -115,19 +115,12 @@ export default function App() {
     }
 
     function onOpenNotification(notify) {
-      console.log(notify);
       if (Platform.OS === 'ios') {
         console.log('[App] onOpenNotification : ios notify :', notify);
         setWebviewURL(`https://www.goods-duck.com/${notify.data.clickAction}`);
       } else {
-        console.log(
-          '[App] onOpenNotification : android notify :',
-          notify.notification,
-        );
-
-        setWebviewURL(
-          `https://www.goods-duck.com/${notify.notification.data.clickAction}`,
-        );
+        console.log('[App] onOpenNotification : android notify :', notify);
+        setWebviewURL(`https://www.goods-duck.com/${notify.data.clickAction}`);
       }
     }
 
