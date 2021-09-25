@@ -114,7 +114,8 @@ export default function App() {
       );
     }
 
-    const onOpenNotification = notify => {
+    function onOpenNotification(notify) {
+      console.log(notify);
       if (Platform.OS === 'ios') {
         console.log('[App] onOpenNotification : ios notify :', notify);
         setWebviewURL(`https://www.goods-duck.com/${notify.data.clickAction}`);
@@ -125,10 +126,10 @@ export default function App() {
         );
 
         setWebviewURL(
-          `https://www.goods-duck.com${notify.notification.data.clickAction}`,
+          `https://www.goods-duck.com/${notify.notification.data.clickAction}`,
         );
       }
-    };
+    }
 
     const backAction = () => {
       Alert.alert('GOODSDUCK', '정말 종료하시겠습니까? 😭', [
