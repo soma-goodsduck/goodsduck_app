@@ -83,12 +83,7 @@ class FCMService {
       );
 
       if (remoteMessage) {
-        if (Platform.OS === 'ios') {
-          onOpenNotification(remoteMessage);
-        } else {
-          const notification = remoteMessage.notification;
-          onOpenNotification(notification);
-        }
+        onOpenNotification(remoteMessage);
         //this.removeDeliveredNotification(Notification.NotificationId)
       } else {
         console.log('background notification error');
@@ -107,11 +102,7 @@ class FCMService {
         );
 
         if (remoteMessage) {
-          if (Platform.OS === 'ios') {
-            onOpenNotification(remoteMessage);
-          } else {
-            onOpenNotification(remoteMessage);
-          }
+          onOpenNotification(remoteMessage);
           //this.removeDeliveredNotification(notification.notificationId)
         } else {
           console.log('quit state notification error : ');

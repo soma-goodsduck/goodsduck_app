@@ -83,7 +83,7 @@ export default function App() {
       if (Platform.OS === 'ios') {
         setNotiUrl(notify.data.clickAction);
       } else {
-        setNotiUrl(notify.notification.data.clickAction);
+        setNotiUrl(notify.data.clickAction);
       }
 
       if (notify.data.type === 'LEVEL_UP') {
@@ -120,7 +120,7 @@ export default function App() {
         setWebviewURL(`https://www.goods-duck.com/${notify.data.clickAction}`);
       } else {
         console.log('[App] onOpenNotification : android notify :', notify);
-        setWebviewURL(`https://www.goods-duck.com/${notify.data.clickAction}`);
+        setWebviewURL(`https://www.goods-duck.com/${notify.clickAction}`);
       }
     }
 
