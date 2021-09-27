@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {WebView} from 'react-native-webview';
 import AsyncStorage from '@react-native-community/async-storage';
+import NetInfo from '@react-native-community/netinfo';
 
 import {fcmService} from './src/FCMService';
 import {localNotificationService} from './src/LocalNotificationService';
@@ -22,6 +23,7 @@ export default function App() {
   const [showNoti, setShowNoti] = useState(false);
   const [notiInfo, setNotiInfo] = useState(null);
   const [notiUrl, setNotiUrl] = useState('');
+  const [isConnected, setIsConnected] = useState(false);
 
   let webviewRef = useRef();
 
@@ -140,11 +142,25 @@ export default function App() {
       backAction,
     );
 
+    const handleConnectivityChange = state => {
+      if (state.isConnected) {
+        setIsConnected(true);
+      } else {
+        Alert.alert(
+          '⚠️ 서버에 연결할 수 없습니다. 잠시 후 다시 이용해주세요.',
+          [{text: '확인', onPress: () => BackHandler.exitApp()}],
+        );
+        setIsConnected(false);
+      }
+    };
+    NetInfo.addEventListener(handleConnectivityChange);
+
     return () => {
       console.log('[App] unRegister');
       fcmService.unRegister();
       localNotificationService.unregister();
       backHandler.remove();
+      NetInfo.removeEventListener(handleConnectivityChange());
     };
   }, []);
 
@@ -189,17 +205,19 @@ export default function App() {
           onClickNoti={handleClickNoti}
         />
       )}
-      <WebView
-        style={styles.webview}
-        source={{uri: webviewURL}}
-        userAgent={Platform.OS === 'ios' ? 'IOS APP' : 'ANDROID APP'}
-        webviewRef={webviewRef}
-        ref={handleSetRef}
-        onLoadEnd={handleEndLoading}
-        onNavigationStateChange={onNavigationStateChange}
-        injectedJavaScript={debugging}
-        onMessage={onMessage}
-      />
+      {isConnected && (
+        <WebView
+          style={styles.webview}
+          source={{uri: webviewURL}}
+          userAgent={Platform.OS === 'ios' ? 'IOS APP' : 'ANDROID APP'}
+          webviewRef={webviewRef}
+          ref={handleSetRef}
+          onLoadEnd={handleEndLoading}
+          onNavigationStateChange={onNavigationStateChange}
+          injectedJavaScript={debugging}
+          onMessage={onMessage}
+        />
+      )}
     </SafeAreaView>
   );
 }
