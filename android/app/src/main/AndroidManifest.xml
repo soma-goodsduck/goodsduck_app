@@ -18,6 +18,9 @@
         android:windowSoftInputMode="adjustResize">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
+
+            <!--앱이 백그라운드 상태일때 푸시 알림바 클릭시 열리는 엑티비티 및 데이터 받는 필터 설정-->
+            <category android:name="android.intent.category.DEFAULT" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
       </activity>
