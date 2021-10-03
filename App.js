@@ -19,6 +19,7 @@ import SplashScreen from 'react-native-splash-screen';
 
 export default function App() {
   const [webviewURL, setWebviewURL] = useState('https://www.goods-duck.com/');
+
   const [token, setToken] = useState('');
   const [showNoti, setShowNoti] = useState(false);
   const [notiInfo, setNotiInfo] = useState(null);
@@ -26,10 +27,6 @@ export default function App() {
   const [isConnected, setIsConnected] = useState(false);
 
   let webviewRef = useRef();
-
-  const handleSetRef = _ref => {
-    webviewRef = _ref;
-  };
 
   const onNavigationStateChange = async navState => {
     const url = navState.url.split('/');
@@ -46,7 +43,12 @@ export default function App() {
 
   const sendFcmToken = () => {
     const data = {type: 'TOKEN', data: token};
-    webviewRef.postMessage(JSON.stringify(data));
+    webviewRef.current.postMessage(JSON.stringify(data));
+  };
+
+  const reqBackBtn = () => {
+    const data = {type: 'BACK_ANDROID'};
+    webviewRef.current.postMessage(JSON.stringify(data));
   };
 
   const handleClickNoti = _notiUrl => {
@@ -126,20 +128,14 @@ export default function App() {
       }
     }
 
-    const backAction = () => {
-      Alert.alert('GOODSDUCK', '정말 종료하시겠습니까? 😭', [
-        {
-          text: '취소',
-          onPress: () => null,
-        },
-        {text: '확인', onPress: () => BackHandler.exitApp()},
-      ]);
+    const onBackPress = () => {
+      reqBackBtn();
       return true;
     };
 
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
-      backAction,
+      onBackPress,
     );
 
     const handleConnectivityChange = state => {
@@ -187,6 +183,10 @@ export default function App() {
       sendFcmToken();
     }
 
+    if (dataPayload.type === 'REQ_EXIT_ANDROID') {
+      BackHandler.exitApp();
+    }
+
     if (dataPayload) {
       if (dataPayload.type === 'Console') {
         console.info(`[Console] ${JSON.stringify(dataPayload.data)}`);
@@ -211,7 +211,7 @@ export default function App() {
           source={{uri: webviewURL}}
           userAgent={Platform.OS === 'ios' ? 'IOS APP' : 'ANDROID APP'}
           webviewRef={webviewRef}
-          ref={handleSetRef}
+          ref={webviewRef}
           onLoadEnd={handleEndLoading}
           onNavigationStateChange={onNavigationStateChange}
           injectedJavaScript={debugging}
