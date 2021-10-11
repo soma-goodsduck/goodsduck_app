@@ -6,6 +6,7 @@ import {
   LogBox,
   BackHandler,
   Alert,
+  Linking,
 } from 'react-native';
 import {WebView} from 'react-native-webview';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -39,6 +40,12 @@ export default function App() {
 
   const handleEndLoading = () => {
     console.log('handleEndLoading');
+  };
+
+  const sendAuthStatus = async () => {
+    const authStatus = await AsyncStorage.getItem('isAlertEnabled');
+    const data = {type: 'AUTH_STATUS', data: authStatus};
+    webviewRef.current.postMessage(JSON.stringify(data));
   };
 
   const sendFcmToken = () => {
@@ -177,6 +184,14 @@ export default function App() {
       dataPayload = JSON.parse(payload.nativeEvent.data);
     } catch (e) {
       console.log(e);
+    }
+
+    if (dataPayload.type === 'REQ_AUTH_STATUS') {
+      sendAuthStatus();
+    }
+
+    if (dataPayload.type === 'REQ_SHOW_SETTING') {
+      Linking.openSettings();
     }
 
     if (dataPayload.type === 'REQ_FCM_TOKEN') {

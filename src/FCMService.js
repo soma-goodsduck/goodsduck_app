@@ -1,5 +1,6 @@
 import messaging from '@react-native-firebase/messaging';
 import {Platform} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 class FCMService {
   register = (onRegister, onNotification, onOpenNotification) => {
@@ -21,7 +22,10 @@ class FCMService {
   checkPermission = onRegister => {
     messaging()
       .hasPermission()
-      .then(enabled => {
+      .then(async enabled => {
+        const authStatus = enabled === 1 ? 'true' : 'false';
+        await AsyncStorage.setItem('isAlertEnabled', authStatus);
+
         if (enabled) {
           //User has permission
           this.getToken(onRegister);
